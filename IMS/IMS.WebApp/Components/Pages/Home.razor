@@ -1,0 +1,31 @@
+﻿@page "/"
+@using IMS.CoreBusiness
+@using IMS.UseCases.Inventories
+
+@inject ViewInventoriesByNameUseCase UseCase
+
+<PageTitle>Home</PageTitle>
+
+<br/>
+<br/>
+
+@if (inventories is not null)
+{
+    // if inventories is empty, then nothing is shown (but the razor syntax is still right)
+    <ul>
+        @foreach (var iv in inventories)
+        {
+            <li>@iv.InventoryName</li>
+        }
+    </ul>
+}
+
+@code {
+    private List<Inventory>? inventories;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // use the injected use case
+        inventories = (await UseCase.ExcecuteAsync()).ToList();
+    }
+}
